@@ -6,26 +6,30 @@
 
 require('expose-loader?PIXI!phaser-ce/build/custom/pixi.js');
 require('expose-loader?p2!phaser-ce/build/custom/p2.js');
-require('expose-loader?Phaser!phaser-ce/build/custom/phaser-split.js');
+//require('expose-loader?Phaser!phaser-ce/build/custom/phaser-split.js');
+var Phaser = window.Phaser = require("phaser-ce/build/custom/phaser-split");
 
 /**
  * Create a new Phaser game instance.
  * And render a single sprite so we make sure it works.
  */
 
+var sea;
+
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', {preload: preload, create: create, update: update});
 
 function preload() {
     console.log('preload');
-    game.load.image('logo', './assets/images/sea.png');
+    game.load.image('sea', './assets/images/sea.png');
+    game.load.image('ship_1', './assets/images/ship1.png');
+    game.load.image('ship_2', './assets/images/ship2.png');
 }
 
 function create() {
-    console.log('create');
-    var logo = game.add.sprite(0, 0, 'logo');
+    sea = game.add.tileSprite(0, 0, 800, 600, 'sea');
+
 };
 
 function update() {
-    // ¯ \_(ツ)_/¯
-    // "surprise me"
+    sea.tilePosition.y += 2;
 }
