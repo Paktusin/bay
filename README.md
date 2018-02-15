@@ -1,7 +1,5 @@
+**Установка:**
+`yarn install`
+
 **Запуск:**
-
-```
-yarn install
-
-yarn run start
-```
+`yarn run start`
