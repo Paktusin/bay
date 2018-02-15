@@ -16,12 +16,13 @@ require('expose-loader?Phaser!phaser-ce/build/custom/phaser-split.js');
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', {preload: preload, create: create, update: update});
 
 function preload() {
-    game.load.image('logo', './assets/images/phaser.png');
+    console.log('preload');
+    game.load.image('logo', './assets/images/sea.png');
 }
 
 function create() {
-    var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
-    logo.anchor.setTo(0.5, 0.5);
+    console.log('create');
+    var logo = game.add.sprite(0, 0, 'logo');
 };
 
 function update() {
