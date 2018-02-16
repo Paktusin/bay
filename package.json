@@ -4,7 +4,6 @@
     "socket.io": "^2.0.4"
   },
   "devDependencies": {
-    "nodemon": "^1.15.0",
     "expose-loader": "^0.7.3",
     "fs": "^0.0.1-security",
     "phaser-ce": "^2.8.0",
