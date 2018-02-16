@@ -53,23 +53,24 @@ function create() {
 
 function update() {
     sea.tilePosition.y += .1;
-    if (!my_player) return;
-    if (cursors.left.isDown) {
-        players[my_player].update(actions.ACTION_LEFT);
-        client.action(players[my_player].toServer());
-    } else if (cursors.right.isDown) {
-        players[my_player].update(actions.ACTION_RIGHT);
-        client.action(players[my_player].toServer());
-    } else if (cursors.up.isDown) {
-        players[my_player].update(actions.ACTION_UP);
-        client.action(players[my_player].toServer());
-    } else if (cursors.down.isDown) {
-        players[my_player].update(actions.ACTION_DOWN);
-        client.action(players[my_player].toServer());
-    } else {
-        if (players[my_player].action !== actions.ACTION_STAY) {
-            players[my_player].update(actions.ACTION_STAY);
+    if (my_player) {
+        if (cursors.left.isDown) {
+            players[my_player].update(actions.ACTION_LEFT);
             client.action(players[my_player].toServer());
+        } else if (cursors.right.isDown) {
+            players[my_player].update(actions.ACTION_RIGHT);
+            client.action(players[my_player].toServer());
+        } else if (cursors.up.isDown) {
+            players[my_player].update(actions.ACTION_UP);
+            client.action(players[my_player].toServer());
+        } else if (cursors.down.isDown) {
+            players[my_player].update(actions.ACTION_DOWN);
+            client.action(players[my_player].toServer());
+        } else {
+            if (players[my_player].action !== actions.ACTION_STAY) {
+                players[my_player].update(actions.ACTION_STAY);
+                client.action(players[my_player].toServer());
+            }
         }
     }
 }

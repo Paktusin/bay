@@ -32,14 +32,15 @@ io.on('connection', function (socket) {
         socket.broadcast.emit('newplayer', socket.player);
     });
     socket.on('update', function (player) {
-        if (!socket.player || socket.player === player) return;
-        socket.player = Object.assign(socket.player, player);
-        socket.broadcast.emit('action', socket.player);
+        if (socket.player && socket.player !== player) {
+            socket.player = Object.assign(socket.player, player);
+            socket.broadcast.emit('action', socket.player);
+        }
     });
     socket.on('disconnect', function () {
-        if (!socket.player) return;
-        io.emit('remove', socket.player.id);
-
+        if (socket.player) {
+            io.emit('remove', socket.player.id);
+        }
     });
 });
 
