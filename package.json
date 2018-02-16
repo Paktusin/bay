@@ -13,7 +13,8 @@
     "webpack-dev-server": "^2.5.0"
   },
   "scripts": {
-    "start": "node ./server/server.js"
+    "start": "node ./server/server.js",
+    "heroku-postbuild": "webpack -p --config ./webpack.config.js --progress"
   },
   "main": "./server/server.js"
 }
