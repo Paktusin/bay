@@ -36,7 +36,7 @@ function create() {
 }
 
 function update() {
-    sea.tilePosition.y += 2;
+    sea.tilePosition.y += .1;
     ship.body.velocity.x = 0;
     ship.body.velocity.y = 0;
     if (cursors.left.isDown) {
