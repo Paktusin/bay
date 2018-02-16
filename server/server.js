@@ -4,23 +4,21 @@ var server = require('http').Server(app);
 var io = require('socket.io').listen(server);
 var actions = require('../common/actions');
 
-app.use('/assets', express.static(__dirname + '/node_modules'));
-app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html');
-});
+app.use('/', express.static(__dirname + '/../public'));
+
 app.get('/status', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(
         getAllPlayers()
     ));
 });
+
 server.listen(8081, function () { // Listens to port 8081
     console.log('Listening on ' + server.address().port);
 });
 server.lastPlayderID = 0;
 io.on('connection', function (socket) {
     socket.on('newplayer', function (data) {
-        console.log('client call newplayer ' + data.name);
         socket.player = {
             id: server.lastPlayderID++,
             name: data.name,
@@ -34,13 +32,11 @@ io.on('connection', function (socket) {
     });
     socket.on('update', function (player) {
         if (!socket.player || socket.player === player) return;
-        console.log(socket.player, 'to',player);
         socket.player = Object.assign(socket.player, player);
         socket.broadcast.emit('action', socket.player);
     });
     socket.on('disconnect', function () {
         if (!socket.player) return;
-        console.log('client disconnected ' + socket.player.name);
         io.emit('remove', socket.player.id);
 
     });
