@@ -8,12 +8,12 @@ module.exports = {
         path: path.join(__dirname, 'public', 'assets', 'scripts')
     },
     devServer: {
-        publicPath: '/assets/scripts/',
-        contentBase: path.join(__dirname, 'server/public'),
+        publicPath: '/assets/scripts',
+        contentBase: path.join(__dirname, '/public'),
         port: 8080
-    },
-    plugins:
-        [
-            new UglifyJsPlugin()
-        ]
+    }
+    // plugins:
+    //     [
+    //         new UglifyJsPlugin()
+    //     ]
 };

@@ -27,9 +27,9 @@ io.on('connection', function (socket) {
             x: randomInt(100, 700),
             y: randomInt(100, 600)
         };
-        socket.emit('myplayer', socket.player.id);
         socket.emit('allplayers', getAllPlayers());
         socket.broadcast.emit('newplayer', socket.player);
+        socket.emit('myplayer', socket.player.id);
     });
     socket.on('update', function (player) {
         if (socket.player && socket.player !== player) {
