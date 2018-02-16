@@ -12,7 +12,7 @@ var players = {};
 var sea, cursors;
 var my_player;
 
-client.socket = io.connect('https://whispering-hamlet-98706.herokuapp.com');
+client.socket = io.connect('https://baygame.herokuapp.com');
 
 client.askNewPlayer = function (name) {
     client.socket.emit('newplayer', name);
