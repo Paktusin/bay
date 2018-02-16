@@ -12,8 +12,7 @@ var players = {};
 var sea, cursors;
 var my_player;
 
-
-client.socket = io.connect('http://localhost:8081');
+client.socket = io.connect('https://whispering-hamlet-98706.herokuapp.com');
 
 client.askNewPlayer = function (name) {
     client.socket.emit('newplayer', name);

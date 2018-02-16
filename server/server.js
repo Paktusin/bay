@@ -3,6 +3,7 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io').listen(server);
 var actions = require('../common/actions');
+const PORT = process.env.PORT || 8080;
 
 app.use('/', express.static(__dirname + '/../public'));
 
@@ -13,7 +14,7 @@ app.get('/status', function (req, res) {
     ));
 });
 
-server.listen(8081, function () { // Listens to port 8081
+server.listen(PORT, function () {
     console.log('Listening on ' + server.address().port);
 });
 server.lastPlayderID = 0;
