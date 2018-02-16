@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io').listen(server);
+var actions = require('../common/actions');
 
 app.use('/assets', express.static(__dirname + '/node_modules'));
 app.get('/', function (req, res) {
@@ -23,19 +24,28 @@ io.on('connection', function (socket) {
         socket.player = {
             id: server.lastPlayderID++,
             name: data.name,
+            action: actions.ACTION_STAY,
             x: randomInt(100, 700),
             y: randomInt(100, 600)
         };
+        socket.emit('myplayer', socket.player.id);
         socket.emit('allplayers', getAllPlayers());
         socket.broadcast.emit('newplayer', socket.player);
     });
+    socket.on('update', function (player) {
+        if (!socket.player || socket.player === player) return;
+        console.log(socket.player, 'to',player);
+        socket.player = Object.assign(socket.player, player);
+        socket.broadcast.emit('action', socket.player);
+    });
     socket.on('disconnect', function () {
-        if(socket.player){
-            console.log('client disconnected ' + socket.player.name);
-            io.emit('remove', socket.player.id);
-        }
+        if (!socket.player) return;
+        console.log('client disconnected ' + socket.player.name);
+        io.emit('remove', socket.player.id);
+
     });
 });
+
 function getAllPlayers() {
     var players = [];
     Object.keys(io.sockets.connected).forEach(function (socketID) {
