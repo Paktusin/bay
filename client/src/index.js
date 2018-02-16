@@ -12,6 +12,7 @@ var players = {};
 var sea, cursors;
 var my_player;
 
+
 client.socket = io.connect('http://localhost:8081');
 
 client.askNewPlayer = function (name) {
