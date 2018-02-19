@@ -12,7 +12,10 @@ var players = {};
 var sea, cursors;
 var my_player;
 
-client.socket = io.connect('https://baygame.herokuapp.com');
+client.socket = io.connect(process.env.production ? 'https://baygame.herokuapp.com' : 'http://localhost:8080');
+if(!process.env.production){
+    console.log('dev mode')
+}
 
 client.askNewPlayer = function (name) {
     client.socket.emit('newplayer', name);

@@ -12,6 +12,7 @@
   },
   "scripts": {
     "start": "node ./server/server.js",
+    "client": "./node_modules/.bin/webpack-dev-server",
     "heroku-postbuild": "webpack -p --config ./webpack.config.js --progress"
   },
   "main": "./server/server.js"
