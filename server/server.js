@@ -24,6 +24,7 @@ io.on('connection', function (socket) {
             id: server.lastPlayderID++,
             name: data.name,
             action: actions.ACTION_STAY,
+            type: data.type,
             x: randomInt(100, 700),
             y: randomInt(100, 600)
         };

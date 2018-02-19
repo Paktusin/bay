@@ -16,7 +16,6 @@ function config(env) {
         },
         plugins:
             [
-                new UglifyJsPlugin(),
                 new webpack.DefinePlugin({
                     'process.env': {
                         production: (env === 'prod')

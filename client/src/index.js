@@ -2,6 +2,7 @@ require('expose-loader?PIXI!phaser-ce/build/custom/pixi.js');
 require('expose-loader?p2!phaser-ce/build/custom/p2.js');
 //require('expose-loader?Phaser!phaser-ce/build/custom/phaser-split.js');
 var actions = require('../../common/actions');
+var settings = require('../../common/settings');
 
 var Phaser = window.Phaser = require("phaser-ce/build/custom/phaser-split");
 var io = require('socket.io-client');
@@ -13,9 +14,17 @@ var sea, cursors;
 var my_player;
 
 client.socket = io.connect(process.env.production ? 'https://baygame.herokuapp.com' : 'http://localhost:8080');
-if(!process.env.production){
+if (!process.env.production) {
     console.log('dev mode')
 }
+
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, '', {
+    preload: preload,
+    create: create,
+    update: update,
+    render: render
+});
+
 
 client.askNewPlayer = function (name) {
     client.socket.emit('newplayer', name);
@@ -25,6 +34,7 @@ client.socket.on('newplayer', function (data) {
 });
 client.socket.on('myplayer', function (id) {
     my_player = id;
+    game.camera.follow(players[my_player].sprite);
 });
 client.socket.on('allplayers', function (data) {
     data.forEach(function (player_data) {
@@ -41,17 +51,25 @@ client.action = function (player) {
     client.socket.emit('update', player);
 };
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', {preload: preload, create: create, update: update});
 
 function preload() {
     game.load.image('sea', './assets/images/sea.png');
-    game.load.spritesheet('ship_1', './assets/images/ship1.png', 32, 32);
+    for (var i = 0; i < 6; i++) {
+        game.load.spritesheet('ship_' + (i + 1), './assets/images/ship' + (i + 1) + '.png', 32, 32);
+    }
 }
 
 function create() {
-    sea = game.add.tileSprite(0, 0, 800, 600, 'sea');
+    sea = game.add.tileSprite(0, 0, settings.WORLD_SIZE, settings.WORLD_SIZE, 'sea');
+    game.world.setBounds(0, 0, settings.WORLD_SIZE, settings.WORLD_SIZE);
     cursors = game.input.keyboard.createCursorKeys();
-    client.askNewPlayer({name: 'Name' + Math.round(Math.random() * 100)})
+
+    var myFuturePlayer = {
+        name: 'Name' + Math.round(Math.random() * 100),
+        type: 'ship_' + Math.floor(Math.random() * (6 - 1) + 1)
+    };
+    console.log(myFuturePlayer);
+    client.askNewPlayer(myFuturePlayer);
 }
 
 function update() {
@@ -89,7 +107,9 @@ function removePlayer(id) {
 
 function actionPlayer(data) {
     if (my_player !== data.id) {
-        console.log('update some user on client');
         players[data.id].updatePos(data);
     }
+}
+
+function render() {
 }
