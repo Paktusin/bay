@@ -8,25 +8,28 @@ var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 function config(env) {
     var conf = {
+        externals: {
+            jquery: 'jQuery'
+        },
         entry: {
-            app:'./client3D/app.js'
+            app: './client3D/app.js'
         },
         output: {
             path: path.resolve(__dirname, 'public/3d'),
             filename: '[name].[chunkhash].js'
         },
         devServer: {
-            publicPath: '/3d',
+            publicPath: '/',
             contentBase: path.join(__dirname, 'public/3d'),
             port: 3000
         },
         plugins:
             [
+                new CleanWebpackPlugin(['public/3d/*']),
                 new HtmlWebpackPlugin({
                     template: './client3D/index.html'
                 }),
                 new WebpackAssetsManifest({}),
-                new CleanWebpackPlugin(['public/3d']),
                 new webpack.DefinePlugin({
                     'process.env': {
                         production: (env === 'prod')
