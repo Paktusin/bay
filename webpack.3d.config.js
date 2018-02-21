@@ -4,6 +4,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var WebpackAssetsManifest = require('webpack-assets-manifest');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 
 function config(env) {
@@ -20,11 +21,17 @@ function config(env) {
         },
         devServer: {
             publicPath: '/',
-            contentBase: path.join(__dirname, 'public/3d'),
+            contentBase: path.resolve(__dirname, 'public/3d'),
             port: 3000
         },
         plugins:
             [
+                new CopyWebpackPlugin([
+                    {
+                        from: path.resolve(__dirname, 'client3D/assets'),
+                        to: path.resolve(__dirname, 'public/3d/assets')
+                    }
+                ]),
                 new CleanWebpackPlugin(['public/3d/*']),
                 new HtmlWebpackPlugin({
                     template: './client3D/index.html'
