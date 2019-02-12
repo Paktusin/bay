@@ -5,3 +5,4 @@
 /public/3d/*
 public/dist/
 public/index.html
+.env
