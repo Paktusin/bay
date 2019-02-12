@@ -16,18 +16,17 @@ function config(env, argv) {
         plugins: [
             new HtmlWebpackPlugin({
                 template: path.join(__dirname, 'client/src/index.html'),
-                filename: '../index.html'
+                filename: path.resolve(__dirname,  'public/dist/index.html'),
             }),
             new CleanWebpackPlugin(path.join(__dirname, 'public', 'dist'))
         ],
 
         devServer: {
-            publicPath: '/dist',
-            contentBase: path.join(__dirname, '/public'),
+            contentBase: path.join(__dirname, 'public'),
             port: 3000
         },
-        module:{
-            rules:[
+        module: {
+            rules: [
                 {
                     test: /\.js$/,
                     exclude: '/node_modules/',

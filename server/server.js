@@ -36,11 +36,14 @@ io.on('connection', function (socket) {
         if (socket.player && socket.player !== player) {
             socket.player = Object.assign(socket.player, player);
             socket.broadcast.emit('action', socket.player);
+
+            console.log('update player id=' + socket.player.id);
         }
     });
     socket.on('disconnect', function () {
         if (socket.player) {
             io.emit('remove', socket.player.id);
+            console.log('disconnect new player id=' + socket.player.id);
         }
     });
 });
