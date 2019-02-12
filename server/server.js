@@ -1,7 +1,8 @@
-var express = require('express');
-var app = express();
-var actions = require('../common/actions');
+const express = require('express');
+const app = express();
+const actions = require('../common/actions');
 const https = require('https');
+const fs = require('fs');
 const http = require('http');
 const PORT = process.env.PORT || 8082;
 
