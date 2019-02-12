@@ -1,6 +1,5 @@
 require('expose-loader?PIXI!phaser-ce/build/custom/pixi.js');
 require('expose-loader?p2!phaser-ce/build/custom/p2.js');
-//require('expose-loader?Phaser!phaser-ce/build/custom/phaser-split.js');
 
 var actions = require('../../common/actions');
 var settings = require('../../common/settings');

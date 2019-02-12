@@ -1,12 +1,11 @@
 var express = require('express');
 var app = express();
-var server = require('http').Server(app);
-var io = require('socket.io').listen(server);
 var actions = require('../common/actions');
-require('dotenv').config();
-
+const https = require('https');
+const http = require('http');
 const PORT = process.env.PORT || 8082;
 
+require('dotenv').config();
 
 app.use('/', express.static(__dirname + '/../public'));
 
@@ -17,10 +16,23 @@ app.get('/status', function (req, res) {
     ));
 });
 
-server.listen(PORT, function () {
+if (process.env.SSL_KEY && process.env.SSL_CERT) {
+    let https = require('https');
+    const options = {
+        key: fs.readFileSync(process.env.SSL_KEY),
+        cert: fs.readFileSync(process.env.SSL_CERT)
+    };
+    server = https.createServer(options, app);
+} else {
+    server = http.createServer(app);
+}
+server.lastPlayderID = 0;
+
+server.listen(process.env.PORT || 8082, function () {
     console.log('Listening on ' + server.address().port);
 });
-server.lastPlayderID = 0;
+var io = require('socket.io').listen(server);
+
 io.on('connection', function (socket) {
     socket.on('newplayer', function (data) {
         socket.player = {

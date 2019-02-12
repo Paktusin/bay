@@ -16,7 +16,7 @@ function config(env, argv) {
         plugins: [
             new HtmlWebpackPlugin({
                 template: path.join(__dirname, 'client/src/index.html'),
-                filename: path.resolve(__dirname,  'public/dist/index.html'),
+                filename: path.resolve(__dirname,  'public/index.html'),
             }),
             new CleanWebpackPlugin(path.join(__dirname, 'public', 'dist'))
         ],
