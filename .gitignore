@@ -3,3 +3,5 @@
 /node_modules
 /public/assets/scripts/*
 /public/3d/*
+public/dist/
+public/index.html

@@ -1,33 +1,47 @@
 const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-function config(env) {
-    var conf = {
-        entry: './client/src/index.js',
-        output: {
-            filename: 'bundle.js',
-            path: path.join(__dirname, 'public', 'assets', 'scripts')
+
+function config(env, argv) {
+    const config = {
+        entry: {
+            app: './client/src/index.js'
         },
+        output: {
+            path: path.resolve(__dirname, 'public/dist'),
+            filename: "[name].[chunkhash].js",
+        },
+        plugins: [
+            new HtmlWebpackPlugin({
+                template: path.join(__dirname, 'client/src/index.html'),
+                filename: '../index.html'
+            }),
+            new CleanWebpackPlugin(path.join(__dirname, 'public', 'dist'))
+        ],
+
         devServer: {
-            publicPath: '/assets/scripts',
+            publicPath: '/dist',
             contentBase: path.join(__dirname, '/public'),
             port: 3000
         },
-        plugins:
-            [
-                new webpack.DefinePlugin({
-                    'process.env': {
-                        production: (env === 'prod')
+        module:{
+            rules:[
+                {
+                    test: /\.js$/,
+                    exclude: '/node_modules/',
+                    use: {
+                        loader: 'babel-loader'
                     }
-                })
+                },
             ]
+        }
     };
-    if (env === 'prod') {
-        conf.plugins.push(new UglifyJsPlugin())
+    if (argv.mode === 'production') {
+        config.plugins.push(new UglifyJsPlugin())
     }
-    return conf;
-};
-
+    return config;
+}
 
 module.exports = config;
