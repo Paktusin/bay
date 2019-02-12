@@ -14,7 +14,8 @@ var players = {};
 var sea, cursors;
 var my_player;
 
-client.socket = io.connect(process.env.production ? 'https://paktusin.ddns.net:/' : 'http://localhost:8080');
+
+client.socket = io.connect(process.env.production ? 'https://paktusin.ddns.net:8082' : 'http://localhost:8082');
 if (!process.env.production) {
     console.log('dev mode')
 }
