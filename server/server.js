@@ -47,13 +47,13 @@ io.on('connection', function (socket) {
         socket.emit('allplayers', getAllPlayers());
         socket.broadcast.emit('newplayer', socket.player);
         socket.emit('myplayer', socket.player.id);
+        console.log('connect player id=' + socket.player.id);
+
     });
     socket.on('update', function (player) {
         if (socket.player && socket.player !== player) {
             socket.player = Object.assign(socket.player, player);
             socket.broadcast.emit('action', socket.player);
-
-            console.log('update player id=' + socket.player.id);
         }
     });
     socket.on('disconnect', function () {
