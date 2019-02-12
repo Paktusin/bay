@@ -5,4 +5,4 @@ module.exports = Object.freeze({
     ACTION_DOWN: 3,
     ACTION_PUNCH: 4,
     ACTION_STAY: 5,
-})
+});
