@@ -35,7 +35,7 @@ server.listen(process.env.PORT || 8082, function () {
 var io = require('socket.io').listen(server);
 
 io.on('connection', function (socket) {
-    socket.on('newplayer', function (data) {
+    socket.on('newplayer', function (socket, data) {
         socket.player = {
             id: server.lastPlayderID++,
             name: data.name,
@@ -48,7 +48,6 @@ io.on('connection', function (socket) {
         socket.broadcast.emit('newplayer', socket.player);
         socket.emit('myplayer', socket.player.id);
         console.log('connect player id=' + socket.player.id);
-
     });
     socket.on('update', function (player) {
         if (socket.player && socket.player !== player) {
@@ -64,6 +63,10 @@ io.on('connection', function (socket) {
     });
 });
 
+function newPlayer(data) {
+
+}
+
 function getAllPlayers() {
     var players = [];
     Object.keys(io.sockets.connected).forEach(function (socketID) {
@@ -75,4 +78,8 @@ function getAllPlayers() {
 
 function randomInt(low, high) {
     return Math.floor(Math.random() * (high - low) + low);
+}
+
+function addBot() {
+
 }

@@ -7,7 +7,6 @@ class Player {
         this.name = params.name || 'Player';
         this.action = params.action;
         this.type = params.type;
-
         this.sprite = game.add.sprite(params.x, params.y, this.type);
         this.text = game.add.text(this.sprite.x, this.sprite.y - SPRITE_SIZE / 2, this.name.toLowerCase(), {
             font: 'normal 8pt Arial'

@@ -64,7 +64,7 @@ class Game {
     }
 
     update() {
-        this.sea.tilePosition.y += .1;
+        // this.sea.tilePosition.y += .1;
         if (this.myPlayer) {
             if (this.cursors.left.isDown) {
                 this.players[this.myPlayer].update(actions.ACTION_LEFT);
