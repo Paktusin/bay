@@ -3,14 +3,13 @@ import actions from '../../common/actions';
 
 class Player {
     constructor(params, game) {
-
         this.id = params.id;
         this.name = params.name || 'Player';
         this.action = params.action;
         this.type = params.type;
 
         this.sprite = game.add.sprite(params.x, params.y, this.type);
-        this.text = game.add.text(this.x, this.y - SPRITE_SIZE / 2, this.name.toLowerCase(), {
+        this.text = game.add.text(this.sprite.x, this.sprite.y - SPRITE_SIZE / 2, this.name.toLowerCase(), {
             font: 'normal 8pt Arial'
         });
         this.sprite.anchor.set(.5, .5);
@@ -26,7 +25,6 @@ class Player {
         this.speedX = 150;
         this.speedY = 100;
 
-        this.update(actions.ACTION_STAY);
 
         this.actions = {};
 
@@ -60,6 +58,8 @@ class Player {
             this.sprite.body.velocity.y = this.speedY;
             this.sprite.body.velocity.x = 0;
         };
+
+        this.update(actions.ACTION_STAY);
     }
 
     updateText() {
