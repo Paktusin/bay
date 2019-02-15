@@ -17,6 +17,7 @@ app.get('/status', function (req, res) {
     ));
 });
 
+let server;
 if (process.env.SSL_KEY && process.env.SSL_CERT) {
     let https = require('https');
     const options = {
@@ -28,49 +29,53 @@ if (process.env.SSL_KEY && process.env.SSL_CERT) {
     server = http.createServer(app);
 }
 server.lastPlayderID = 0;
+server.listen(process.env.PORT || 8082,  () =>console.log('Listening on ' + server.address().port));
 
-server.listen(process.env.PORT || 8082, function () {
-    console.log('Listening on ' + server.address().port);
-});
-var io = require('socket.io').listen(server);
+let socket;
+let io = require('socket.io')
+    .listen(server);
+io.on('connection', onConnect);
 
-io.on('connection', function (socket) {
-    socket.on('newplayer', function (socket, data) {
-        socket.player = {
-            id: server.lastPlayderID++,
-            name: data.name,
-            action: actions.ACTION_STAY,
-            type: data.type,
-            x: randomInt(100, 700),
-            y: randomInt(100, 600)
-        };
-        socket.emit('allplayers', getAllPlayers());
-        socket.broadcast.emit('newplayer', socket.player);
-        socket.emit('myplayer', socket.player.id);
-        console.log('connect player id=' + socket.player.id);
-    });
-    socket.on('update', function (player) {
-        if (socket.player && socket.player !== player) {
-            socket.player = Object.assign(socket.player, player);
-            socket.broadcast.emit('action', socket.player);
-        }
-    });
-    socket.on('disconnect', function () {
-        if (socket.player) {
-            io.emit('remove', socket.player.id);
-            console.log('disconnect new player id=' + socket.player.id);
-        }
-    });
-});
+function onConnect(soc) {
+    socket = soc;
+    socket.on('newplayer', newPlayer);
+    socket.on('update',update);
+    socket.on('disconnect',disconnect);
+}
+
+function disconnect() {
+    if (socket.player) {
+        io.emit('remove', socket.player.id);
+        console.log('disconnect new player id=' + socket.player.id);
+    }
+}
+
+function update(player) {
+    if (socket.player && socket.player !== player) {
+        socket.player = Object.assign(socket.player, player);
+        socket.broadcast.emit('action', socket.player);
+    }
+}
 
 function newPlayer(data) {
-
+    socket.player = {
+        id: server.lastPlayderID++,
+        name: data.name,
+        action: actions.ACTION_STAY,
+        type: data.type,
+        x: randomInt(100, 700),
+        y: randomInt(100, 600)
+    };
+    socket.emit('allplayers', getAllPlayers());
+    socket.broadcast.emit('newplayer', socket.player);
+    socket.emit('myplayer', socket.player.id);
+    console.log('connect player id=' + socket.player.id);
 }
 
 function getAllPlayers() {
-    var players = [];
+    let players = [];
     Object.keys(io.sockets.connected).forEach(function (socketID) {
-        var player = io.sockets.connected[socketID].player;
+        let player = io.sockets.connected[socketID].player;
         if (player) players.push(player);
     });
     return players;
