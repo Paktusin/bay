@@ -1,9 +1,12 @@
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
-var io = require('socket.io').listen(server);
+var IO = require('socket.io');
 var actions = require('../common/actions');
 const PORT = process.env.PORT || 8080;
+
+IO.origins = 'https://paktusin.github.io';
+const io = IO.listen(server);
 
 app.use('/', express.static(__dirname + '/../public'));
 
