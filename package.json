@@ -18,8 +18,7 @@
   "scripts": {
     "start": "node ./server/server.js",
     "client": "./node_modules/.bin/webpack-dev-server",
-    "client3d": "./node_modules/.bin/webpack-dev-server -p --config ./webpack.3d.config.js --progress",
-    "heroku-postbuild": "webpack -p --config ./webpack.config.js --progress --env=prod"
+    "build": "./node_modules/.bin/webpack --env=prod"
   },
   "main": "./server/server.js"
 }
