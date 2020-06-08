@@ -13,7 +13,7 @@ var players = {};
 var sea, cursors;
 var my_player;
 
-client.socket = io.connect(process.env.prod ? 'https://baygame.ey.r.appspot.com' : 'http://localhost:8080');
+client.socket = io.connect('https://baygame.ey.r.appspot.com:8080');
 if (!process.env.production) {
     console.log('dev mode')
 }
